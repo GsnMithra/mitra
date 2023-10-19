@@ -1,16 +1,30 @@
 "use client"
 
 import Entry from './page.module.css'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { loginUser } from '../server/serverActions.ts'
 
-export default function Home() {
-
+export default function Home () {
   const [loginState, setLoginState] = useState (false)
   const changeModeLogin = () => {
-    setLoginState (true);
+    setLoginState (!loginState);
   }
   const [username, setUsername] = useState ('')
   const [password, setPassword] = useState ('')
+  async function UsernameLogin () {
+    if (username == '' || password == '')
+      return;
+    const reply = await loginUser (username, password);
+    if (reply?.exist && reply.credentials) {
+      window.location.href = '/chat';
+    } else if (reply?.exist) {
+      alert ('Incorrect Password');
+    } else {
+      alert ('Username does not exist');
+    }
+
+    console.log (reply);
+  }
 
   return (
     <div className={Entry.main}>
@@ -73,8 +87,13 @@ export default function Home() {
             onChange={(e) => setPassword (e.target.value)}
             placeholder='Password'
           />
-          <div className={Entry.login}>
-              Login
+          <div className={Entry.navigation}>
+            <div className={Entry.login} onClick={UsernameLogin}>
+                Login
+            </div>
+            <div className={Entry.login} onClick={changeModeLogin}>
+                Back
+            </div>
           </div>
         </div>
       </div>}

@@ -154,8 +154,8 @@
   height: 70px;
   width: 110px;
   border: 0.05px solid rgb(200, 200, 200);
-  border-bottom-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
+  border-top-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
   background-color: rgb(127, 193, 255);
   cursor: pointer;
 }
@@ -167,8 +167,8 @@
   height: 70px;
   width: 110px;
   border: 0.05px solid rgb(200, 200, 200);
-  border-bottom-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
+  border-top-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
   background-color: rgb(127, 193, 255);
   cursor: pointer;
 }
@@ -195,6 +195,17 @@
   /* background: none; */
   background-color: aliceblue;
   font: inherit;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.inputfield:focus {
+  padding: 14.08px;
+  border: 0.2px solid rgb(142, 202, 255);
 }
 
 #title {
