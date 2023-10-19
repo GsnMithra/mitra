@@ -1,0 +1,103 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+#logo {
+  padding: 10px;
+  padding-left: 200px;
+  padding-bottom: 0;
+  margin-bottom: -25px;
+}
+
+.description {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 65%;
+  flex-direction: column;
+  border-top-right-radius: 100rem;
+}
+
+#title {
+  padding: 45px;
+  padding-bottom: 0;
+}
+
+.usericon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  border-right: 0.05px solid rgb(200, 200, 200);
+  height: 100%;
+  border: 1px solid blue;
+}
+
+#desc {
+  font-size: 1.69rem;
+  padding: 50px;
+  padding-top: 0;
+}
+
+.intro {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  height: 65%;
+  width: 100%;
+  border-bottom: 1px solid rgb(166, 193, 255);
+  flex-direction: column;
+  background-color: rgb(195, 226, 255);
+  font-size: 6rem;
+  border-top-right-radius: 100rem;
+}
+
+.information {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 35%;
+  width: 100%;
+  border-bottom: 0.05px solid rgb(200, 200, 200);
+  flex-direction: column;
+  background-color: rgb(195, 226, 255);
+  font-size: 1.3rem;
+  border-bottom-left-radius: 15rem;
+
+}
+
+.exampletitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 93.5%;
+  font-weight: 300;
+  padding: 35px;
+  padding-left: 50px;
+  padding-bottom: 10px;
+}
+
+.examplecontent {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 88%;
+  font-weight: 200;
+  font-size: medium;
+  word-wrap: break-word;
+  padding-left: 70px;
+}
+
+.logsign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 50%;
+}
