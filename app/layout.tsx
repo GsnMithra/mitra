@@ -1,8 +1,8 @@
-import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
 import './globals.css'
 import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
+import type { Metadata } from 'next'
+import { Poppins } from 'next/font/google'
+
 dotenv.config ();
 
 const poppins = Poppins ({
@@ -16,19 +16,7 @@ export const metadata: Metadata = {
   description: 'Mitra, a large language model-based chatbot',
 }
 
-const connectToDatabase = async () => {
-  const prisma = new PrismaClient ();
-  await prisma.$connect ();
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-
-  connectToDatabase ();
-
+export default function RootLayout ({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={poppins.className}>{children}</body>

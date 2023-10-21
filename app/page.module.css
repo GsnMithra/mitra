@@ -7,6 +7,41 @@
   width: 100vw;
 }
 
+.maincontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #9ad7ff;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  animation: spin 100s linear infinite;
+}
+
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(15500deg); 
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
 #logo {
   padding: 10px;
   padding-left: 200px;
@@ -38,7 +73,6 @@
   width: 60px;
   border-right: 0.05px solid rgb(200, 200, 200);
   height: 100%;
-  border: 1px solid blue;
 }
 
 #desc {
