@@ -19,34 +19,31 @@ export default function ChatPage () {
 
     const [loading, setLoading] = useState (true);
     const [query, setQuery] = useState ('');
-    const [temp, setTemp] = useState ('');
+    const [reply, setReply] = useState ('');
+    const [tempQuery, setTempQuery] = useState ('');
 
-    const setTempQuery = (query: string) => {
-        setTemp (query);
-        setQuery (query);
-    }
-
-    const sendQueryServer = () => {
-        setTemp ('');
-        const pair = sendQuery (query);
+     function sendQueryServer () {
+        console.log (query);
+        sendQuery (query);
         setQuery ('');
-        
+        setTempQuery (query);
     }
 
     const sendQuery = (question: string) => {
-        fetch ('http://127.0.0.1:5000/llama', {
+        fetch ('http://0.0.0.0:6969/llama', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify ({
-                question: question
-            })
+            body: JSON.stringify ({ question: question })
         }).then (res => {
             if (!res.ok) 
                 throw new Error ('Error');
-            return res.json ();
-        }).catch (err => {});
+            return res.text ();
+        }).then (data => {
+            setReply (data);
+        })
+        .catch (err => {});
     }
 
     return (
@@ -62,15 +59,26 @@ export default function ChatPage () {
                     <div className={Chat.chatheader}>
                     </div>
                     <div className={Chat.chatbody}>
-                        {}
+                        <div className={Chat.chatreply}>
+                            <div className={Chat.messageuser}>
+                                {tempQuery}
+                            </div>
+                            <div className={Chat.messagellama}>
+                                {reply}
+                            </div>
+                        </div>
                     </div>
                     <div className={Chat.chatfooter}>
                         <input 
                             className={Chat.chatinput}
                             type='text'
-                            value={temp}
+                            value={query}
                             placeholder='Send a message'
-                            onChange={(e) => setTempQuery (e.target.value)}
+                            onChange={(e) => setQuery (e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter')
+                                    sendQueryServer ();
+                            }}
                         />
                         <div className={Chat.chatsend} onClick={sendQueryServer}>
                             <Image 

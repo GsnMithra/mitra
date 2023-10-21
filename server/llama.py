@@ -1,5 +1,5 @@
-from flask import Flask, request, make_response, jsonify
 from flask_cors import CORS
+from flask import Flask, request, make_response, jsonify, stream_with_context
 
 from langchain.llms import LlamaCpp
 from langchain import PromptTemplate
@@ -35,10 +35,12 @@ model = LlamaCpp (
 @app.route ('/llama', methods=['POST'])
 def GetModel ():
     query = request.json ['question']
-    return jsonify ({
-        'question': query,
-        'answer': model (prompt.format (text=query))
-    })
+
+    def FlyingLLaMA ():
+        for answer in model (prompt.format (text=query)):
+            yield answer
+
+    return app.response_class (FlyingLLaMA (), mimetype='text/plain')
 
 if __name__ == '__main__':
-    app.run ()
+    app.run (host='0.0.0.0', port=6969)
