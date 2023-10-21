@@ -30,4 +30,4 @@ const userSchema = new mongoose.Schema ({
     chatSessions: [chatSession],
 });
 
-module.exports = mongoose.model ('User', userSchema);
+module.exports = mongoose.model ('mitra', userSchema, 'mitra-users');

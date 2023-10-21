@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import dotenv from 'dotenv';
+import { PrismaClient } from '@prisma/client';
 dotenv.config ();
 
 const poppins = Poppins ({
@@ -16,15 +17,8 @@ export const metadata: Metadata = {
 }
 
 const connectToDatabase = async () => {
-  const mongoose = require ('mongoose');
-  mongoose.connect (process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-  mongoose.connection
-    .once ('open', () => console.log ('Connected to database'))
-    .on ('error', (error: any) => console.log ('Error connecting to database:', error));
+  const prisma = new PrismaClient ();
+  await prisma.$connect ();
 }
 
 export default function RootLayout({
