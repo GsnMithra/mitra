@@ -9,8 +9,8 @@ datasource db {
 
 model ChatInteraction {
   id        Int      @id @default(autoincrement())
-  query     String   @db.VarChar(255)
-  answer    String   @db.VarChar(255)
+  query     String   @db.Text
+  answer    String   @db.Text
   timestamp DateTime @default(now())
   userId    Int
   user User @relation(fields: [userId], references: [id])

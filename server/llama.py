@@ -9,7 +9,7 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 app = Flask (__name__)
 CORS (app, resources={r'/llama': {'origins': 'http://localhost:3000'}})
 
-model_path = './models/llama-13B.bin'
+model_path = '/Users/gsnmithra/Documents/CodeMatrix/Projects/mitra/models/llama-13B.bin'
 callback = CallbackManager ([StreamingStdOutCallbackHandler ()])
 prompt = PromptTemplate.from_template (
     """

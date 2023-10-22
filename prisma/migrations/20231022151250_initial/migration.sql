@@ -1,8 +1,8 @@
 -- CreateTable
 CREATE TABLE `ChatInteraction` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `query` VARCHAR(255) NOT NULL,
-    `answer` VARCHAR(255) NOT NULL,
+    `query` TEXT NOT NULL,
+    `answer` TEXT NOT NULL,
     `timestamp` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `userId` INTEGER NOT NULL,
 

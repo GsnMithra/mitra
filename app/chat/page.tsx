@@ -1,49 +1,36 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import Chat from './chat.module.css'
-import Image from 'next/image';
+import Image from 'next/image'
 import SendButton from '../../resources/send-query.png'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
+import { storeQueryAnswer } from '../../server/serverActions'
 
 export default function ChatPage () {
-
     useEffect (() => {
-        setLoading (true);
-        const auth = Cookies.get ('authenticated');
+        setLoading (true)
+        const auth = Cookies.get ('authenticated')
         if (!auth) {
-            window.location.href = '/';
+            window.location.href = '/'
         }
-        setLoading (false);
-    }, []);
+        setLoading (false)
+    }, [])
 
-    const [loading, setLoading] = useState (true);
-    const [query, setQuery] = useState ('');
-    const [reply, setReply] = useState ('');
-    const [tempQuery, setTempQuery] = useState ('');
+    const [loading, setLoading] = useState (true)
+    const [query, setQuery] = useState ('')
+    const [reply, setReply] = useState ('')
+    const [tempQuery, setTempQuery] = useState ('')
 
-     function sendQueryServer () {
-        console.log (query);
-        sendQuery (query);
-        setQuery ('');
-        setTempQuery (query);
-    }
+    async function sendQueryServer () {
+        setTempQuery (query)
+        setQuery ('')
+        const username = Cookies.get ('username')
 
-    const sendQuery = (question: string) => {
-        fetch ('http://0.0.0.0:6969/llama', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify ({ question: question })
-        }).then (res => {
-            if (!res.ok) 
-                throw new Error ('Error');
-            return res.text ();
-        }).then (data => {
-            setReply (data);
-        })
-        .catch (err => {});
+        let response: any = undefined
+        if (username)
+            response = await storeQueryAnswer (username, query)
+        setReply (response)
     }
 
     return (
@@ -77,7 +64,7 @@ export default function ChatPage () {
                             onChange={(e) => setQuery (e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter')
-                                    sendQueryServer ();
+                                    sendQueryServer ()
                             }}
                         />
                         <div className={Chat.chatsend} onClick={sendQueryServer}>
@@ -93,5 +80,5 @@ export default function ChatPage () {
                 </div>
             </div>}
         </div>
-    );
+    )
 }
