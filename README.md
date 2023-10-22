@@ -1,8 +1,39 @@
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## This is a very, very early build
 
 ## Getting Started
 
-First, run the development server:
+Firstly we need a quantized model of LLaMA to feed it into `LlamaCpp`
+
+We can download the model from `https://ai.meta.com/llama/`
+
+We need to quantize the model file to make it lighter and less resource hungry.
+
+
+Quantize the model:
+```bash
+https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+
+python3 convert.py --outfile output-model.bin --outtype f16 <downloaded-model-directory>
+./quantize output-model.bin output-model-quantized.bin q4_0
+```
+
+Test the model:
+```bash
+touch test-prompt.txt
+echo "This is some text to write to a file." > test-prompt.txt
+./main -m output-model.bin -n <int:max_tokens> <additional-args> -f test-prompt.txt
+```
+
+Run the Flask model:
+```bash
+python3 ./server/llama.py
+```
+
+Run the development server:
 
 ```bash
 npm run dev
