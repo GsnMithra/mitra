@@ -6,7 +6,18 @@ const bcrypt = require ('bcrypt')
 const dotenv = require ('dotenv')
 dotenv.config ()
 
-export async function storeChatMessage (username: string, message: string) {}
+export async function FetchChatConversation (username: string) {
+  return await prisma.chatInteraction.findMany ({
+    where: {
+      user: {
+        username: username
+      }
+    },
+    orderBy: {
+      timestamp: 'asc'
+    },
+  })
+}
 
 export async function storeQueryAnswer (username: string, query: string) {
   let reply: any = undefined
@@ -21,7 +32,10 @@ export async function storeQueryAnswer (username: string, query: string) {
       throw new Error ('Error')
     return res.text ()
   }).then (data => {
-    reply = data
+    if (data.length === 0)
+      reply = 'Failed to load the data. Please try again later. Error code: 0xM1TR0001'
+    else
+      reply = data
   }).catch (err => {})
   
   const user = await prisma.user.findUnique ({
