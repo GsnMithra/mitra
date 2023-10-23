@@ -14,25 +14,42 @@
     width: 25px;
     height: 25px;
     animation: spin 100s linear infinite;
-  }
+}
+
+.loadermessage {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #9ad7ff;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    animation: spin 100s linear infinite;
+    margin-right: -10px;
+}
   
-  @keyframes spin {
+@keyframes spin {
     0% { 
-      transform: rotate(0deg); 
+        transform: rotate(0deg); 
     }
     100% { 
-      transform: rotate(15500deg); 
+        transform: rotate(15500deg); 
     }
-  }
-  
-  .loading {
+}
+
+.loading {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100vw;
-  }
-  
+}
+
+.loadingmessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 50px;
+}
 
 .container {
     display: flex;
@@ -67,14 +84,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 8%;
-    width: 96.2%;
-    margin-left: 5.5px;
-    margin-top: 20px;
+    height: 5.5%;
+    width: 100%;
     margin-bottom: 0;
-    /* border-radius: 18px; */
-    border-top-right-radius: 18px;
-    border-top-left-radius: 18px;
+    /* border-radius: 12px; */
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
@@ -101,14 +114,15 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    font-weight: 400;
     word-wrap: break-word;
     padding: 10px;
     margin-left: 5px;
     margin-right: 5px;
     background-color: rgb(195, 226, 255);
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    border-bottom-left-radius: 18px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
@@ -118,13 +132,14 @@
     align-items: center;
     width: 95%;
     word-wrap: break-word;
+    font-weight: 300;
     padding: 10px;
     margin-left: 10px;
     margin-right: -10px;
     justify-self: flex-start;
     align-self: flex-end;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     background-color: rgb(228, 242, 255);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
@@ -140,8 +155,8 @@
     margin-right: -10px;
     justify-self: flex-start;
     align-self: flex-end;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     background-color: rgb(228, 242, 255);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
     color: rgb(255, 192, 192);
@@ -153,38 +168,32 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 86%;
-    width: 96.2%;
-    /* margin-top: 15px; */
-    margin-left: 5.5px;
-    margin-bottom: 7px;
+    height: 100%;
+    width: 100%;
     overflow-y: scroll;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px; 
 }
 
 .chatfooter {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10%;
+    height: 100px;
     width: 100%;
     flex-direction: row;
 }
 
 .chatinput {
     background-color: aliceblue;
-    height: 60%;
+    height: 45%;
     width: 90%;
     border: 0;
-    border-radius: 25px;
-    border-top-right-radius: 18px;
-    border-bottom-left-radius: 18px;
+    /* border-radius: 25px; */
+    border-top-right-radius: 11px;
+    border-bottom-left-radius: 11px;
     outline: none;
-    margin: 25px;
-    margin-bottom: 40px;
-    margin-left: 6px;
+    /* margin: 25px; */
+    /* margin-bottom: 40px; */
     font-size: 17px;
     padding: 5px;
     padding-left: 15px;
@@ -198,10 +207,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 65%;
-    width: 4.5%;
-    border-top-left-radius: 18px;
-    border-bottom-right-radius: 18px;
+    height: 55%;
+    width: 3.8%;
+    border-top-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     font-size: 17px;
     font-family: inherit;
     font-weight: 390;

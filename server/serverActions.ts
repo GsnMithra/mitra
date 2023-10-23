@@ -48,17 +48,15 @@ export async function storeQueryAnswer (username: string, query: string) {
     await prisma.chatInteraction.create ({
       data: {
         query: query,
-        answer: reply,
         user: {
           connect: {
             id: user.id
           }
-        }
+        },
+        answer: reply,        
       }
     })
   }
-
-  return reply
 }
 
 export async function createUser (username: string, password: string) {
