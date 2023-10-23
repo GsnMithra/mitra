@@ -5,12 +5,14 @@ from langchain.llms import LlamaCpp
 from langchain import PromptTemplate
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 app = Flask (__name__)
 CORS (app, resources={r'/llama': {'origins': 'http://localhost:3000'}})
 
 model_path = '/Users/gsnmithra/Documents/CodeMatrix/Projects/mitra/models/llama-13B.bin'
 callback = CallbackManager ([StreamingStdOutCallbackHandler ()])
+querySplit = RecursiveCharacterTextSplitter (chunk_size=512)
 
 inference_prompts = {
     'general': PromptTemplate.from_template (
@@ -25,7 +27,7 @@ inference_prompts = {
     'summarization': PromptTemplate.from_template (
         """
         <s>[INST] <<SYS>>
-        You summarize the text below. Please ensure that your summaries are socially unbiased and positive in nature.
+        You summarize the text below into 15 to 20 words. Please ensure that your responses are socially unbiased and positive in nature.
         <</SYS>>
         {text}
         [/INST]
@@ -35,8 +37,8 @@ inference_prompts = {
 
 model = LlamaCpp (
     model_path=model_path,
-    temperature=0.69,
-    max_tokens=512,
+    temperature=0.5,
+    max_tokens=10000,
     n_gpu_layers=1000,
     n_batch=4096,
     top_p=1,
@@ -46,12 +48,14 @@ model = LlamaCpp (
 
 @app.route ('/llama', methods=['POST'])
 def GetModel ():
-    query = request.json ['question']
+    completeQuery = request.json ['question']
     infer_model = inference_prompts[request.json ['model']]
 
     def FlyingLLaMA ():
-        for answer in model (infer_model.format (text=query)):
-            yield answer
+        queryChunks = querySplit.create_documents ([completeQuery])
+        for c in range (len (queryChunks)):
+            chunk = queryChunks[c]
+            yield model.format (text=chunk.page_content)
 
     return app.response_class (FlyingLLaMA (), mimetype='text/plain')
 
