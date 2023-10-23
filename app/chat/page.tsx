@@ -44,8 +44,6 @@ export default function ChatPage () {
 
         fetchChat ()
         setLoading (false)
-        if (chatScroller.current)
-            chatScroller.current.scrollTop = chatScroller.current.scrollHeight
     }, [fetchChat])
 
     const [loading, setLoading] = useState (true)
@@ -53,6 +51,7 @@ export default function ChatPage () {
     const [tempQuery, setTempQuery] = useState ('')
     const [fetched, setFetched] = useState (true)
     const chatScroller = useRef <HTMLDivElement> (null);
+    const [modelSelection, setModelSelection] = useState ('general')
 
     async function sendQueryServer () {
         if (query === '')
@@ -63,7 +62,9 @@ export default function ChatPage () {
 
         const username = Cookies.get ('username')
         if (username) {
-            await storeQueryAnswer (username, query)
+            if (chatScroller.current)
+                chatScroller.current.scrollTop = chatScroller.current.scrollHeight
+            await storeQueryAnswer (username, query, modelSelection)
             setFetched (true)
         }
     }
@@ -75,12 +76,17 @@ export default function ChatPage () {
             </div>}
             {!loading && <div className={Chat.container}>
                 <div className={Chat.chats}>
-
                 </div>
                 <div className={Chat.chat}>
-                    <div className={Chat.chatheader}>
-                    </div>
                     <div className={Chat.chatbody}>
+                        <div className={Chat.chatheader}>
+                            <form>
+                                <select id={Chat.selectOption} value={modelSelection} onChange={(e: any) => {setModelSelection (e.target.value)}}>
+                                    <option value="general">General</option>
+                                    <option value="summarization">Summarization</option>
+                                </select>
+                            </form>
+                        </div>
                         <div ref={chatScroller} className={Chat.chatreply}>
                             {chats.map ((chat, index) => {
                                 return <div key={index} className={Chat.messagepair}>
@@ -103,27 +109,27 @@ export default function ChatPage () {
                                 </div>
                             </div>}
                         </div>
-                    </div>
-                    <div className={Chat.chatfooter}>
-                        <input 
-                            className={Chat.chatinput}
-                            type='text'
-                            value={query}
-                            placeholder='Send a message'
-                            onChange={(e) => setQuery (e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter')
-                                    sendQueryServer ()
-                            }}
-                        />
-                        <div className={Chat.chatsend} onClick={sendQueryServer}>
-                            <Image 
-                                src={SendButton} 
-                                id={Chat.sendbutton}
-                                width={30} 
-                                height={30} 
-                                alt=''
+                        <div className={Chat.promptsection}>
+                            <input 
+                                className={Chat.chatinput}
+                                type='text'
+                                value={query}
+                                placeholder='Send a message'
+                                onChange={(e) => setQuery (e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') 
+                                        sendQueryServer ()
+                                }}
                             />
+                            <div className={Chat.chatsend} onClick={sendQueryServer}>
+                                <Image 
+                                    src={SendButton} 
+                                    id={Chat.sendbutton}
+                                    width={20} 
+                                    height={20} 
+                                    alt=''
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

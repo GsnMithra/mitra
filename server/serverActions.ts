@@ -19,14 +19,17 @@ export async function FetchChatConversation (username: string) {
   })
 }
 
-export async function storeQueryAnswer (username: string, query: string) {
+export async function storeQueryAnswer (username: string, query: string, model: string) {
   let reply: any = undefined
   await fetch ('http://0.0.0.0:6969/llama', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify ({ question: query })
+    body: JSON.stringify ({ 
+      question: query,
+      model: model
+    })
   }).then (res => {
     if (!res.ok) 
       throw new Error ('Error')
@@ -48,12 +51,12 @@ export async function storeQueryAnswer (username: string, query: string) {
     await prisma.chatInteraction.create ({
       data: {
         query: query,
+        answer: reply,
         user: {
           connect: {
             id: user.id
           }
         },
-        answer: reply,        
       }
     })
   }
