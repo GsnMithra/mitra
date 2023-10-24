@@ -15,7 +15,7 @@ callback = CallbackManager ([StreamingStdOutCallbackHandler ()])
 querySplit = RecursiveCharacterTextSplitter (chunk_size=512)
 
 inference_prompts = {
-    'general': PromptTemplate.from_template (
+    'descriptive': PromptTemplate.from_template (
         """
         <s>[INST] <<SYS>>
         You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
@@ -55,7 +55,7 @@ def GetModel ():
         queryChunks = querySplit.create_documents ([completeQuery])
         for c in range (len (queryChunks)):
             chunk = queryChunks[c]
-            yield model.format (text=chunk.page_content)
+            yield model (infer_model.format (text=chunk.page_content))
 
     return app.response_class (FlyingLLaMA (), mimetype='text/plain')
 

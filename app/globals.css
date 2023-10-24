@@ -4,9 +4,12 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
   --background-color: #F8F9FA;
   --background-alternate-color: #E9ECEF;
+  --header-color: #cedff3;
   --border-color: #CED4DA;
   --foreground-color: #E9ECEF;
   --foreground-alternate-color: #DEE2E6;
+  --user-message-color: rgb(219, 238, 255);
+  --ai-message-color: rgb(239, 248, 255);
 }
 
 * {

@@ -1,11 +1,11 @@
 import './globals.css'
 import dotenv from 'dotenv';
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
+import { Work_Sans } from 'next/font/google'
 
 dotenv.config ();
 
-const poppins = Poppins ({
+const poppins = Work_Sans ({
   weight: ['100', '200', '300', '500', '800', '900'],
   style: ['normal', 'italic'],
   subsets: ['latin']

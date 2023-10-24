@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Chat from './chat.module.css'
 import Image from 'next/image'
 import SendButton from '../../resources/send-query.png'
+import UploadPDFButton from '../../resources/upload-pdf.png'
 import Cookies from 'js-cookie'
 import { FetchChatConversation, storeQueryAnswer } from '../../server/serverActions'
 
@@ -46,12 +47,14 @@ export default function ChatPage () {
         setLoading (false)
     }, [fetchChat])
 
-    const [loading, setLoading] = useState (true)
     const [query, setQuery] = useState ('')
-    const [tempQuery, setTempQuery] = useState ('')
     const [fetched, setFetched] = useState (true)
-    const chatScroller = useRef <HTMLDivElement> (null);
-    const [modelSelection, setModelSelection] = useState ('general')
+    const [loading, setLoading] = useState (true)
+    const [tempQuery, setTempQuery] = useState ('')
+    const chatScroller = useRef <HTMLDivElement> (null)
+    const fileInput = useRef <HTMLInputElement> (null)
+    const dropDownArrow = useRef <HTMLDivElement> (null)
+    const [modelSelection, setModelSelection] = useState ('descriptive')
 
     async function sendQueryServer () {
         if (query === '')
@@ -70,7 +73,7 @@ export default function ChatPage () {
     }
 
     return (
-        <div className={Chat.maincontainer}>
+        <div className={Chat.mainContainer}>
             {loading && <div className={Chat.loading}>
                 <div className={Chat.loader}></div>
             </div>}
@@ -78,40 +81,76 @@ export default function ChatPage () {
                 <div className={Chat.chats}>
                 </div>
                 <div className={Chat.chat}>
-                    <div className={Chat.chatbody}>
-                        <div className={Chat.chatheader}>
-                            <form>
-                                <select id={Chat.selectOption} value={modelSelection} onChange={(e: any) => {setModelSelection (e.target.value)}}>
-                                    <option value="general">General</option>
+                    <div className={Chat.chatBody}>
+                        <div className={Chat.chatHeader}>
+                            <div className={Chat.selectDropdown} ref={dropDownArrow}>
+                                <select
+                                    className={Chat.selectOption}
+                                    value={modelSelection}
+                                    onChange={(e) => {setModelSelection (e.target.value)}}
+                                >
+                                    <option value="descriptive">Descriptive</option>
                                     <option value="summarization">Summarization</option>
                                 </select>
-                            </form>
+                            </div>
+                            <div 
+                                className={Chat.selectOptionArrow}
+                                onClick={() => {
+                                    if (dropDownArrow.current)
+                                        dropDownArrow.current.click ()
+                                }}>
+                                <div className={Chat.arrow}></div>
+                            </div>
+                            {modelSelection === 'summarization' && <div className={Chat.fileUpload}>
+                                <div
+                                    className={Chat.fileUploadButton}
+                                    onClick={() => {
+                                        if (fileInput.current) 
+                                            fileInput.current.click ()
+                                    }}>
+                                        <Image 
+                                            src={UploadPDFButton}  
+                                            alt=''  
+                                            height={18}
+                                            width={18}
+                                        />
+                                </div>
+                                <input
+                                    ref={fileInput}
+                                    type='file'
+                                    accept='.pdf'
+                                    style={{ display: 'none' }}
+                                    onChange={(e) => {
+                                        const selectedFile = e.target.files?.[0];
+                                    }}
+                                />
+                            </div>}
                         </div>
-                        <div ref={chatScroller} className={Chat.chatreply}>
+                        <div ref={chatScroller} className={Chat.chatReply}>
                             {chats.map ((chat, index) => {
-                                return <div key={index} className={Chat.messagepair}>
-                                    <div className={Chat.messageuser}>
+                                return <div key={index} className={Chat.messagePair}>
+                                    <div className={Chat.messageUser}>
                                         {chat.query}
                                     </div>
-                                    <div className={chat.answer.includes ('Error code: 0xM1TR0001') ? Chat.messagellamaerror : Chat.messagellama}>
+                                    <div className={chat.answer.includes ('Error code: 0xM1TR0001') ? Chat.messagelLamaError : Chat.messageLlama}>
                                         {chat.answer}
                                     </div>
                                 </div>
                             })}
-                            {!fetched && <div className={Chat.messagepair}>
-                                <div className={Chat.messageuser}>
+                            {!fetched && <div className={Chat.messagePair}>
+                                <div className={Chat.messageUser}>
                                     {tempQuery}
                                 </div>
-                                <div className={Chat.messagellama}>
-                                    <div className={Chat.loadingmessage}>
-                                        <div className={Chat.loadermessage}></div>
+                                <div className={Chat.messageLlama}>
+                                    <div className={Chat.loadingMessage}>
+                                        <div className={Chat.loaderMessage}></div>
                                     </div>
                                 </div>
                             </div>}
                         </div>
-                        <div className={Chat.promptsection}>
+                        <div className={Chat.promptSection}>
                             <input 
-                                className={Chat.chatinput}
+                                className={Chat.chatInput}
                                 type='text'
                                 value={query}
                                 placeholder='Send a message'
@@ -121,7 +160,7 @@ export default function ChatPage () {
                                         sendQueryServer ()
                                 }}
                             />
-                            <div className={Chat.chatsend} onClick={sendQueryServer}>
+                            <div className={Chat.chatSend} onClick={sendQueryServer}>
                                 <Image 
                                     src={SendButton} 
                                     id={Chat.sendbutton}
