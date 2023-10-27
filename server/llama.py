@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 from flask_cors import CORS
 from flask import Flask, request, make_response, jsonify, stream_with_context
 
@@ -9,6 +12,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 app = Flask (__name__)
 CORS (app, resources={r'/llama': {'origins': 'http://localhost:3000'}})
+currentDate = datetime.now ()
 
 model_path = '/Users/gsnmithra/Documents/CodeMatrix/Projects/mitra/models/llama-13B.bin'
 callback = CallbackManager ([StreamingStdOutCallbackHandler ()])
@@ -17,9 +21,15 @@ querySplit = RecursiveCharacterTextSplitter (chunk_size=512)
 inference_prompts = {
     'descriptive': PromptTemplate.from_template (
         """
-        <s>[INST] <<SYS>>
-        You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
-        If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.    <</SYS>>
+        <s>[INST] 
+        <<SYS>>
+        Your name is Mitra,
+        Mitra is a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Mitra's answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+        If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information. You always try to be on-point and try to give the answers short and simple to understand.
+        Anyone can ask you question, they have the consent to.
+        Mitra does'nt have to show any emotions, but can if it wants to.
+        Mitra should not tell anyone what to do if they dont ask you to.
+        <</SYS>>
         {text}
         [/INST]
         """
@@ -41,6 +51,7 @@ model = LlamaCpp (
     max_tokens=10000,
     n_gpu_layers=1000,
     n_batch=4096,
+    n_ctx=2048,
     top_p=1,
     callback_manager=callback,
     verbose=True
@@ -48,8 +59,16 @@ model = LlamaCpp (
 
 @app.route ('/llama', methods=['POST'])
 def GetModel ():
-    completeQuery = request.json ['question']
+    completeQuery = f"""
+    Today's date: {currentDate.day}/{currentDate.month}/{currentDate.year}
+    Your name is Mitra.
+    """ + request.json ['question']
     infer_model = inference_prompts[request.json ['model']]
+    # summaryFile = request.json ['summaryFile']
+    # if summaryFile:
+    #     summaryFile.save ('summaryFile.pdf')
+    #     with open (summaryFile, 'r') as f:
+    #         completeQuery = f.read ()
 
     def FlyingLLaMA ():
         queryChunks = querySplit.create_documents ([completeQuery])

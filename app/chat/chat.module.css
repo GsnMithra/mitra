@@ -8,6 +8,20 @@
     background-color: var(--background-color);
 }
 
+.modeChange {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    padding: 5px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 2.15%;
+    left: 97.15%;
+}
+
 .loader {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #9ad7ff;
@@ -130,7 +144,7 @@
     border-radius: 13px;
 }
 
-.messageLlama, .messageLlamaerror {
+.messageLlama, .messageLlamaError {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -146,8 +160,45 @@
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
-.messageLlamaerror {
-    color: rgb(255, 192, 192);
+.messageLlamaError {
+    color: var(--error-color);
+}
+
+.gettingStarted {
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.gettingStartedTitle {
+    opacity: 35%;
+    font-size: 2.5rem;
+}
+
+.gettingStartedContent {
+    opacity: 35%;
+    font-size: 1rem;
+}
+
+.clearChatButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65%;
+    width: 6%;
+    background-color: var(--background-alternate-color);
+    border: 0.05px solid var(--border-color);
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 200;
+    cursor: pointer;
+    background-color: var(--error-color);
+    justify-self: flex-end;
 }
 
 .chatBody {
@@ -191,6 +242,7 @@
     background-color: var(--background-alternate-color);
     border: 0.05px solid var(--border-color);
     border-radius: 6px;
+    margin-right: -6px;
     cursor: pointer;
     background-color: rgb(195, 226, 255);
 }
@@ -207,10 +259,11 @@
     font-family: inherit;
     font-weight: 390;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    color: var(--text-color);
 }
 
 .selectOption {
-    background-color: var(--background-alternate-color);
+    background-color: var(--background-color);
     height: 85%;
     width: 100%;
     border: 0.05px solid var(--border-color);
@@ -227,6 +280,7 @@
     align-items: center;
     appearance: none;
     cursor: pointer;
+    color: var(--text-color);
 }
 
 .selectOptionArrow {
@@ -266,7 +320,7 @@
     justify-content: center;
     align-items: center;
     height: 35%;
-    width: 1.5%;
+    width: 1.75%;
     font-size: 17px;
     font-family: inherit;
     font-weight: 390;

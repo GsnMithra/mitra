@@ -10,6 +10,21 @@
   --foreground-alternate-color: #DEE2E6;
   --user-message-color: rgb(219, 238, 255);
   --ai-message-color: rgb(239, 248, 255);
+  --text-color: black;
+  --error-color: rgb(255, 192, 192);
+}
+
+[mitra-theme='dark'] {
+  --background-color: #212529;
+  --background-alternate-color: #343A40;
+  --header-color: #343A40;
+  --border-color: #DEE2E6;
+  --foreground-color: #E9ECEF;
+  --foreground-alternate-color: #DEE2E6;
+  --user-message-color: #495057;
+  --ai-message-color: #6C757D;
+  --text-color: white;
+  --error-color:rgb(132, 81, 77);
 }
 
 * {
@@ -21,6 +36,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  color: var(--text-color);
 }
 
 a {

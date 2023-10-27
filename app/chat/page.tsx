@@ -6,7 +6,8 @@ import Image from 'next/image'
 import SendButton from '../../resources/send-query.png'
 import UploadPDFButton from '../../resources/upload-pdf.png'
 import Cookies from 'js-cookie'
-import { FetchChatConversation, storeQueryAnswer } from '../../server/serverActions'
+import ToggleButton from '../../resources/ToggleColorMode/ToggleButton'
+import { FetchChatConversation, storeQueryAnswer, clearCurrentChat } from '../../server/serverActions'
 
 export interface Chats {
     query: string,
@@ -42,6 +43,10 @@ export default function ChatPage () {
         const auth = Cookies.get ('authenticated')
         if (!auth)
             window.location.href = '/'
+        if (darkTheme) 
+            document.querySelector ('body')?.setAttribute ('mitra-theme', 'dark')
+        else
+            document.querySelector ('body')?.setAttribute ('mitra-theme', 'light')
 
         fetchChat ()
         setLoading (false)
@@ -51,6 +56,7 @@ export default function ChatPage () {
     const [fetched, setFetched] = useState (true)
     const [loading, setLoading] = useState (true)
     const [tempQuery, setTempQuery] = useState ('')
+    const [darkTheme, setDarkTheme] = useState (window.matchMedia('(prefers-color-scheme: dark)').matches)
     const chatScroller = useRef <HTMLDivElement> (null)
     const fileInput = useRef <HTMLInputElement> (null)
     const dropDownArrow = useRef <HTMLDivElement> (null)
@@ -67,13 +73,18 @@ export default function ChatPage () {
         if (username) {
             if (chatScroller.current)
                 chatScroller.current.scrollTop = chatScroller.current.scrollHeight
-            await storeQueryAnswer (username, query, modelSelection)
+            await storeQueryAnswer (username, query, modelSelection, undefined)
             setFetched (true)
         }
     }
 
     return (
         <div className={Chat.mainContainer}>
+            {chats.length === 0 && tempQuery.length === 0 && <div className={Chat.gettingStarted}>
+                <div className={Chat.gettingStartedTitle}>Mitra</div>
+                {modelSelection === 'descriptive' && <div className={Chat.gettingStartedContent}>Get started by asking questions</div>}
+                {modelSelection === 'summarization' && <div className={Chat.gettingStartedContent}>Get content summarized by sending a message or uploading a file</div>}
+            </div>}
             {loading && <div className={Chat.loading}>
                 <div className={Chat.loader}></div>
             </div>}
@@ -83,24 +94,6 @@ export default function ChatPage () {
                 <div className={Chat.chat}>
                     <div className={Chat.chatBody}>
                         <div className={Chat.chatHeader}>
-                            <div className={Chat.selectDropdown} ref={dropDownArrow}>
-                                <select
-                                    className={Chat.selectOption}
-                                    value={modelSelection}
-                                    onChange={(e) => {setModelSelection (e.target.value)}}
-                                >
-                                    <option value="descriptive">Descriptive</option>
-                                    <option value="summarization">Summarization</option>
-                                </select>
-                            </div>
-                            <div 
-                                className={Chat.selectOptionArrow}
-                                onClick={() => {
-                                    if (dropDownArrow.current)
-                                        dropDownArrow.current.click ()
-                                }}>
-                                <div className={Chat.arrow}></div>
-                            </div>
                             {modelSelection === 'summarization' && <div className={Chat.fileUpload}>
                                 <div
                                     className={Chat.fileUploadButton}
@@ -121,10 +114,53 @@ export default function ChatPage () {
                                     accept='.pdf'
                                     style={{ display: 'none' }}
                                     onChange={(e) => {
-                                        const selectedFile = e.target.files?.[0];
+                                        const selectedFile = e.target.files?.[0]
+                                        const formData = new FormData ()
+                                        if (selectedFile)
+                                            formData.append ('file', selectedFile)
                                     }}
                                 />
                             </div>}
+                            <div className={Chat.selectDropdown} ref={dropDownArrow}>
+                                <select
+                                    className={Chat.selectOption}
+                                    value={modelSelection}
+                                    onChange={(e) => {setModelSelection (e.target.value)}}
+                                >
+                                    <option value="descriptive">Descriptive</option>
+                                    <option value="summarization">Summarization</option>
+                                </select>
+                            </div>
+                            <div 
+                                className={Chat.selectOptionArrow}
+                                onClick={() => {
+                                    if (dropDownArrow.current)
+                                        dropDownArrow.current.click ()
+                                }}>
+                                <div className={Chat.arrow}></div>
+                            </div>
+                            <div 
+                                className={Chat.clearChatButton} 
+                                onClick={() => {
+                                    let username = Cookies.get ('username')
+                                    if (username)
+                                        clearCurrentChat (username)
+                                    fetchChat ()
+                                    setTempQuery ('')
+                                    setChats ([])
+                                }}>
+                                Clear Chat
+                            </div>
+                            {/* <div 
+                                className={Chat.clearChatButton} 
+                                onClick={() => {
+                                    // setDarkTheme (!darkTheme)
+                                }}>
+                                Toggle
+                            </div> */}
+                            <div className={Chat.modeChange}>
+                                <ToggleButton checked={darkTheme} onClick={() => {setDarkTheme (!darkTheme)}}/>
+                            </div>
                         </div>
                         <div ref={chatScroller} className={Chat.chatReply}>
                             {chats.map ((chat, index) => {
@@ -132,7 +168,7 @@ export default function ChatPage () {
                                     <div className={Chat.messageUser}>
                                         {chat.query}
                                     </div>
-                                    <div className={chat.answer.includes ('Error code: 0xM1TR0001') ? Chat.messagelLamaError : Chat.messageLlama}>
+                                    <div className={chat.answer.includes ('Error code: 0xM1TR0001') ? Chat.messageLlamaError : Chat.messageLlama}>
                                         {chat.answer}
                                     </div>
                                 </div>
