@@ -14,7 +14,7 @@ app = Flask (__name__)
 CORS (app, resources={r'/llama': {'origins': 'http://localhost:3000'}})
 currentDate = datetime.now ()
 
-model_path = '/Users/gsnmithra/Documents/CodeMatrix/Projects/mitra/models/llama-13B.bin'
+model_path = '../models/llama-13b.bin'
 callback = CallbackManager ([StreamingStdOutCallbackHandler ()])
 querySplit = RecursiveCharacterTextSplitter (chunk_size=512)
 
@@ -59,22 +59,22 @@ model = LlamaCpp (
 
 @app.route ('/llama', methods=['POST'])
 def GetModel ():
-    completeQuery = f"""
-    Today's date: {currentDate.day}/{currentDate.month}/{currentDate.year}
-    Your name is Mitra.
-    """ + request.json ['question']
+    if request.json ['question'] != 'PDF Summary...':
+        completeQuery = f"""
+        Today's date: {currentDate.day}/{currentDate.month}/{currentDate.year}
+        Your name is Mitra.
+        """ + request.json ['question']
+    else:
+        completeQuery = request.files ['file'].read ().decode ('utf-8')
+
     infer_model = inference_prompts[request.json ['model']]
-    # summaryFile = request.json ['summaryFile']
-    # if summaryFile:
-    #     summaryFile.save ('summaryFile.pdf')
-    #     with open (summaryFile, 'r') as f:
-    #         completeQuery = f.read ()
 
     def FlyingLLaMA ():
         queryChunks = querySplit.create_documents ([completeQuery])
         for c in range (len (queryChunks)):
             chunk = queryChunks[c]
-            yield model (infer_model.format (text=chunk.page_content))
+            result = model (infer_model.format (text=chunk.page_content))
+            yield result
 
     return app.response_class (FlyingLLaMA (), mimetype='text/plain')
 

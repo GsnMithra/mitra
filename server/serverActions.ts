@@ -31,20 +31,19 @@ export async function FetchChatConversation (username: string) {
 
 export async function storeQueryAnswer (username: string, query: string, model: string, file: any) {
   let reply: any = undefined
+  if (file === undefined)
+    file = ''
   console.log (file)
   await fetch ('http://0.0.0.0:6969/llama', {
     method: 'POST',
-    headers: {
-      // ...file.getHeaders (),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify ({ 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify ({
       question: query,
-      model: model
-      // summaryFile: file
+      model: model,
+      summaryFile: file
     })
   }).then (res => {
-    if (!res.ok) 
+    if (!res.ok)
       throw new Error ('Error')
     return res.text ()
   }).then (data => {

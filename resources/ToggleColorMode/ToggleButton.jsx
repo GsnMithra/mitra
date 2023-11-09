@@ -15,13 +15,6 @@ class ToggleButton extends Component {
         }));
     }
 
-    componentDidMount () {
-        const script = document.createElement ('script')
-        script.src = 'https://code.iconify.design/1/1.0.4/iconify.min.js'
-        script.async = true
-        document.body.appendChild (script)
-    }
-
     render () {
         return (
             <div className='main'>

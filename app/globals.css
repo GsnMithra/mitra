@@ -12,10 +12,11 @@
   --ai-message-color: rgb(239, 248, 255);
   --text-color: black;
   --error-color: rgb(255, 192, 192);
+  --success-color: rgb(254, 255, 252);
 }
 
 [mitra-theme='dark'] {
-  --background-color: #212529;
+  --background-color: #383838;
   --background-alternate-color: #343A40;
   --header-color: #343A40;
   --border-color: #DEE2E6;
@@ -25,6 +26,7 @@
   --ai-message-color: #6C757D;
   --text-color: white;
   --error-color:rgb(132, 81, 77);
+  --success-color: rgba(96, 96, 96, 0.833);
 }
 
 * {

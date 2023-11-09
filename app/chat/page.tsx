@@ -56,7 +56,7 @@ export default function ChatPage () {
     const [fetched, setFetched] = useState (true)
     const [loading, setLoading] = useState (true)
     const [tempQuery, setTempQuery] = useState ('')
-    const [darkTheme, setDarkTheme] = useState (window.matchMedia('(prefers-color-scheme: dark)').matches)
+    const [darkTheme, setDarkTheme] = useState (window?.matchMedia('(prefers-color-scheme: dark)').matches)
     const chatScroller = useRef <HTMLDivElement> (null)
     const fileInput = useRef <HTMLInputElement> (null)
     const dropDownArrow = useRef <HTMLDivElement> (null)
@@ -90,6 +90,35 @@ export default function ChatPage () {
             </div>}
             {!loading && <div className={Chat.container}>
                 <div className={Chat.chats}>
+                    <div className={Chat.chatsHeader}>
+                        <div className={Chat.chatsTitle}>Chats</div>
+                        <div className={Chat.createChat}>New Chat</div>
+                    </div>
+                    <div className={Chat.chatsBody}>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                        <div className={Chat.singleChatContainer}></div>
+                    </div>
+                    <div className={Chat.chatsFooter}>
+                    </div>
                 </div>
                 <div className={Chat.chat}>
                     <div className={Chat.chatBody}>
@@ -118,6 +147,13 @@ export default function ChatPage () {
                                         const formData = new FormData ()
                                         if (selectedFile)
                                             formData.append ('file', selectedFile)
+                                        const username = Cookies.get ('username')
+                                        if (username) {
+                                            storeQueryAnswer (username, 'PDF Summary...', modelSelection, formData)
+                                            setTempQuery ('Summarizing file...')
+                                            setLoading (true)
+                                            fetchChat ()
+                                        }
                                     }}
                                 />
                             </div>}
@@ -151,13 +187,6 @@ export default function ChatPage () {
                                 }}>
                                 Clear Chat
                             </div>
-                            {/* <div 
-                                className={Chat.clearChatButton} 
-                                onClick={() => {
-                                    // setDarkTheme (!darkTheme)
-                                }}>
-                                Toggle
-                            </div> */}
                             <div className={Chat.modeChange}>
                                 <ToggleButton checked={darkTheme} onClick={() => {setDarkTheme (!darkTheme)}}/>
                             </div>
